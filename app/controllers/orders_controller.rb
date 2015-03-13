@@ -7,11 +7,16 @@ class OrdersController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = Prawn::Document.new
-        pdf.text 'Hello World'
-        send_data pdf.render
+        pdf = OrderPdf.new(@order, view_context)
+        send_data pdf.render, filename:
+                                "order_#{@order.order_number}.pdf",
+                                 type: "application/pdf",
+                                 disposition: "inline"
+
       end
 
     end
   end
+
+
 end
